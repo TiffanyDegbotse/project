@@ -14,6 +14,3 @@
     }
 
     $chores = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-    // Closing connection
-    $conn->close();

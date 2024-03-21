@@ -1,3 +1,9 @@
+<?php
+// Including the connection
+include_once '../functions/get_all_assignment_fxn.php';
+include_once '../functions/home_fxn.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,32 +42,40 @@
 
     <!-- Display All Assignments -->
     <?php
-    if ($allAssignments === null) {
-        echo "<p>No assignments found.</p>";
-    } else {
-        echo "<h3>All Assignments</h3>";
-        echo "<table>";
-        // ... (as before)
-    }
-    ?>
+             display($var_data);
+             ?>
+             </div>
 
     <!-- Display Chore Statistics -->
     <div>
         <h3>Chore Statistics</h3>
         <!-- Add dynamic charts or graphs here if desired -->
-        <p>Total Chores: <?php echo $totalChores; ?></p>
-        <p>In Progress Chores: <?php echo $inProgressChores; ?></p>
-        <p>Incomplete Chores: <?php echo $incompleteChores; ?></p>
-        <p>Completed Chores: <?php echo $completedChores; ?></p>
+        <p>Total Chores:  <?php
+             display($var_data);
+             ?>
+             </div></p>
+        <p>In Progress Chores:  <?php
+             display($var_data_in_progress);
+             ?>
+             </div></p>
+        <p>Incomplete Chores:  <?php
+             display($var_data_incomplete);
+             ?>
+             </div></p>
+        <p>Completed Chores:  <?php
+             display($var_data_completed);
+             ?>
+             </div></p>
     </div>
 
     <!-- Display Recently Assigned Chores -->
     <div>
         <h3>Recently Assigned Chores</h3>
         <ul>
-            <?php foreach ($recentlyAssignedChores as $chore) : ?>
-                <li><?php echo $chore['chore_name']; ?> - Assigned to: <?php echo $chore['assigned_to']; ?>, Due Date: <?php echo $chore['due_date']; ?></li>
-            <?php endforeach; ?>
+        <?php
+             display($var_data_recent);
+             ?>
+             </div>
         </ul>
     </div>
 

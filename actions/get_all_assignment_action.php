@@ -1,10 +1,18 @@
 <?php
 // Including the connection
-include_once('../settings/connection.php');
+include_once '../settings/connection.php';
 
 function getAllAssignments() {
     global $conn;
-    $query = "SELECT * FROM assignment";
+    
+    $query = "SELECT assignment.*, chores.chorename, status.sname, people.fname
+    FROM assignment 
+    INNER JOIN chores ON assignment.cid = chores.cid
+    INNER JOIN status ON assignment.sid = status.sid
+    INNER JOIN assigned_people ON assignment.assignmentid = assigned_people.assignmentid
+    INNER JOIN people ON assigned_people.pid = people.pid";
+
+
 
     $result = mysqli_query($conn, $query);
 
@@ -12,28 +20,33 @@ function getAllAssignments() {
         return "Query failed: " . mysqli_error($conn);
     }
 
-    $num_rows = mysqli_num_rows($result);
+    $assignments = array();
 
-    if ($num_rows > 0) {
-        $assignment = array();
-
-        while ($row = mysqli_fetch_assoc($result)) {
-            $assignment[] = $row;
-        }
-
-        mysqli_free_result($result);
-
-        return $assignment;
-    } else {
-        mysqli_free_result($result);
-        return null;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $assignments[] = $row;
     }
+
+    mysqli_free_result($result);
+
+    return $assignments;
 }
+
+// Calling the function and handling messages
+$allassignments = getAllAssignments();
+
+if (is_array($allassignments)) {
+    // Displaying success message or processing the records
+    echo "Successfully retrieved records!";
+} else {
+    // Displaying error message or handling no records found
+    echo  "$allassignments";
+}
+
 
 // Function 2: Get all chore assignments in progress
 function getAssignmentsInProgress() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE status = 2 AND due_date > CURDATE()";
+    $query = "SELECT * FROM assignment WHERE sid = 2 AND date_due > CURDATE()";
 
     $result = mysqli_query($conn, $query);
 
@@ -55,7 +68,7 @@ function getAssignmentsInProgress() {
 // Function 3: Get all incomplete chore assignments
 function getIncompleteAssignments() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE status = 4 AND due_date < CURDATE()";
+    $query = "SELECT * FROM assignment WHERE sid = 4 AND date_due < CURDATE()";
 
     $result = mysqli_query($conn, $query);
 
@@ -77,7 +90,7 @@ function getIncompleteAssignments() {
 // Function 4: Get all completed chore assignments
 function getCompletedAssignments() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE status = 3";
+    $query = "SELECT * FROM assignment WHERE sid = 3";
 
     $result = mysqli_query($conn, $query);
 
@@ -99,7 +112,7 @@ function getCompletedAssignments() {
 // Function 5: Get all recent chore assignments
 function getRecentAssignments() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE status = 2 ORDER BY assignment_id DESC LIMIT 3";
+    $query = "SELECT * FROM assignment WHERE sid = 2 ORDER BY assignmentid DESC LIMIT 3";
 
     $result = mysqli_query($conn, $query);
 

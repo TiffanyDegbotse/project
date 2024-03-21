@@ -8,7 +8,7 @@ if (isset($_GET['id'])) {
     $assignmentId = $_GET['id'];
 
     // Write the delete query
-    $sql_delete = "DELETE FROM assignment WHERE assignment_id = ?";
+    $sql_delete = "DELETE FROM assignment WHERE assignmentid = ?";
 
     // Prepare and execute the query
     $stmt = mysqli_prepare($conn, $sql_delete);
@@ -30,4 +30,3 @@ if (isset($_GET['id'])) {
     header("Location: ../admin/assign_chore_view.php");
     exit;
 }
-?>

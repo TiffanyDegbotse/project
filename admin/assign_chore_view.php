@@ -1,8 +1,9 @@
 <?php
-include_once("../settings/core.php");
-include("../functions/select_chore.php");
-include("../functions/select_person.php");
-include_once("../functions/get_all_assignment_fxn.php");
+include_once ("../settings/core.php");
+include_once ("../settings/connection.php");
+include ("../functions/select_chore.php");
+include ("../functions/select_person.php");
+
 // Check if the user is logged in
 //session_start();
 //checklogin();
@@ -10,6 +11,7 @@ include_once("../functions/get_all_assignment_fxn.php");
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +40,8 @@ include_once("../functions/get_all_assignment_fxn.php");
             margin-bottom: 5px;
         }
 
-        select, input {
+        select,
+        input {
             margin-bottom: 10px;
             padding: 8px;
             width: 100%;
@@ -55,15 +58,16 @@ include_once("../functions/get_all_assignment_fxn.php");
         }
     </style>
 </head>
+
 <body>
     <h2>Assign Chore</h2>
 
     <form action="../actions/assign_a_chore_action.php" method="post" id="assignChoreForm">
         <label for="assignPerson">Assign Person:</label>
         <select name="assignPerson" id="assignPerson" required>
-        <?php
+            <?php
             foreach ($people as $value) {
-                echo "<option value='".$value['pid']."'>".$value['fname']."</option>";
+                echo "<option value='" . $value['pid'] . "'>" . $value['fname'] . "</option>";
             }
             ?>
         </select>
@@ -72,7 +76,7 @@ include_once("../functions/get_all_assignment_fxn.php");
         <select name="Chore" id="Chore" required>
             <?php
             foreach ($chores as $value) {
-                echo "<option value='".$value['cid']."'>".$value['chorename']."</option>";
+                echo "<option value='" . $value['cid'] . "'>" . $value['chorename'] . "</option>";
             }
             ?>
         </select>
@@ -80,17 +84,32 @@ include_once("../functions/get_all_assignment_fxn.php");
         <label for="dueDate">Due Date:</label>
         <input type="date" name="dueDate" id="dueDate" required>
 
-    <!-- Submit Button -->
-    <button type="submit" name="assignChore" id="assignChore">Assign Chore</button>
+        <!-- Hidden input for assignment ID -->
+        <input type="hidden" name="assignment" value="<?php echo $assignment['assignmentid']; ?>">
+
+        <!-- Hidden input for assignment ID -->
+        <input type="hidden" name="status" value="<?php echo $assignment['sname']; ?>">
+
+        <!-- Submit Button -->
+        <button type="submit" name="assignChore" id="assignChore">Assign Chore</button>
+
+
 
     </form>
 
     <?php
     // Include necessary functions for displaying assignments
-    //include("../actions/get_all_assignment_action.php");
+    include ("../actions/get_all_assignment_action.php");
     ?>
 
     <!-- Display all assignments -->
-    <?php //include("../functions/get_all_assignment_fxn.php"); ?>
+    <?php include ("../functions/get_all_assignment_fxn.php"); ?>
+
+    <div>
+        <?php
+        display($var_data);
+        ?>
+    </div>
 </body>
+
 </html>

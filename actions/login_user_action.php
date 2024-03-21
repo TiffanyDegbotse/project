@@ -3,7 +3,7 @@
 session_start();
 
 // Including the database connection file
-include '../settings/connection.php';
+include_once '../settings/connection.php';
 
 // Checking if login button was clicked
 if ((isset($_SERVER['REQUEST_METHOD']) == "POST") && isset($_POST['signIn'])) {
