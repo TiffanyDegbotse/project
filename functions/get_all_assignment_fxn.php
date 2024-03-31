@@ -3,6 +3,7 @@
 include_once('../actions/get_all_assignment_action.php');
 
 
+
 $assignments= getAllAssignments();
 $var_data = $assignments;
 
@@ -17,6 +18,7 @@ function display($assignments) {
         echo "<tr>";
         echo "<th>Chore Name</th>";
         echo "<th>Assigned By</th>";
+        echo "<th>Assigned To</th>";
         echo "<th>Date Assigned</th>";
         echo "<th>Date Due</th>";
         echo "<th>Chore Status</th>";
@@ -28,7 +30,8 @@ function display($assignments) {
         foreach ($assignments as $assignment) {
             echo "<tr>";
             echo "<td>{$assignment['chorename']}</td>";
-            echo "<td>{$assignment['fname']}</td>";
+            echo "<td>{$assignment['assigned_by_name']}</td>";
+            echo "<td>{$assignment['assigned_to_name']}</td>";
             echo "<td>{$assignment['date_assign']}</td>";
             echo "<td>{$assignment['date_due']}</td>";
             echo "<td>{$assignment['sname']}</td>"; // Displaying the status name
@@ -37,7 +40,6 @@ function display($assignments) {
             //Adding delete link with assignmentid in the URL
             echo "<a href='../actions/delete_assignment_action.php?id={$assignment['assignmentid']}'>Delete</a> 
             | <a href='../actions/update_status_action.php?assignmentid={$assignment['assignmentid']}'>Status</a>"; 
-            // Add your action links here
             echo "</td>";
             echo "</tr>";
         }

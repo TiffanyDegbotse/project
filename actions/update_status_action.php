@@ -6,7 +6,7 @@ include_once '../settings/connection.php';
 include_once '../actions/get_all_statuses_action.php';
 
 if (isset ($_GET['assignmentid']) && isset ($_POST['status'])) {
-    $assignmentId = $_GET['assignment'];
+    $assignmentId = $_GET['assignmentid'];
     $statusId = $_POST['status'];
 
     // Update chore status in the database
@@ -49,6 +49,7 @@ if ($allStatuses === null) {
 
 <body>
     <h2>Update Status</h2>
+    <form method="post">
         <label for="status">Select Status:</label>
         <select name="status" id="status">
             <?php foreach ($allStatuses as $status): ?>
@@ -57,6 +58,9 @@ if ($allStatuses === null) {
                 </option>
             <?php endforeach; ?>
         </select>
+
+        <!-- Hidden input for assignment ID -->
+        <input type="hidden" name="assignmentid" value="<?php echo $_GET['assignmentid']; ?>">
         <button type="submit" name="updateStatus">Update Status</button>
     </form>
 </body>

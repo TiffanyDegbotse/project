@@ -5,12 +5,13 @@ include_once '../settings/connection.php';
 function getAllAssignments() {
     global $conn;
     
-    $query = "SELECT assignment.*, chores.chorename, status.sname, people.fname
+    $query = "SELECT assignment.*, chores.chorename, status.sname, assigned_by.fname AS assigned_by_name, assigned_to.fname AS assigned_to_name
     FROM assignment 
     INNER JOIN chores ON assignment.cid = chores.cid
     INNER JOIN status ON assignment.sid = status.sid
+    INNER JOIN people assigned_by ON assignment.who_assigned = assigned_by.pid
     INNER JOIN assigned_people ON assignment.assignmentid = assigned_people.assignmentid
-    INNER JOIN people ON assigned_people.pid = people.pid";
+    INNER JOIN people assigned_to ON assigned_people.pid = assigned_to.pid";
 
 
 
@@ -31,22 +32,18 @@ function getAllAssignments() {
     return $assignments;
 }
 
-// Calling the function and handling messages
-$allassignments = getAllAssignments();
-
-if (is_array($allassignments)) {
-    // Displaying success message or processing the records
-    echo "Successfully retrieved records!";
-} else {
-    // Displaying error message or handling no records found
-    echo  "$allassignments";
-}
-
 
 // Function 2: Get all chore assignments in progress
 function getAssignmentsInProgress() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE sid = 2 AND date_due > CURDATE()";
+    $query = "SELECT assignment.*, chores.chorename, status.sname, assigned_by.fname AS assigned_by_name, assigned_to.fname AS assigned_to_name
+    FROM assignment 
+    INNER JOIN chores ON assignment.cid = chores.cid
+    INNER JOIN status ON assignment.sid = status.sid
+    INNER JOIN people assigned_by ON assignment.who_assigned = assigned_by.pid
+    INNER JOIN assigned_people ON assignment.assignmentid = assigned_people.assignmentid
+    INNER JOIN people assigned_to ON assigned_people.pid = assigned_to.pid
+    WHERE assignment.sid = 2";
 
     $result = mysqli_query($conn, $query);
 
@@ -68,7 +65,14 @@ function getAssignmentsInProgress() {
 // Function 3: Get all incomplete chore assignments
 function getIncompleteAssignments() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE sid = 4 AND date_due < CURDATE()";
+    $query = "SELECT assignment.*, chores.chorename, status.sname, assigned_by.fname AS assigned_by_name, assigned_to.fname AS assigned_to_name
+    FROM assignment 
+    INNER JOIN chores ON assignment.cid = chores.cid
+    INNER JOIN status ON assignment.sid = status.sid
+    INNER JOIN people assigned_by ON assignment.who_assigned = assigned_by.pid
+    INNER JOIN assigned_people ON assignment.assignmentid = assigned_people.assignmentid
+    INNER JOIN people assigned_to ON assigned_people.pid = assigned_to.pid
+    WHERE assignment.sid = 4";
 
     $result = mysqli_query($conn, $query);
 
@@ -90,7 +94,14 @@ function getIncompleteAssignments() {
 // Function 4: Get all completed chore assignments
 function getCompletedAssignments() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE sid = 3";
+    $query = "SELECT assignment.*, chores.chorename, status.sname, assigned_by.fname AS assigned_by_name, assigned_to.fname AS assigned_to_name
+    FROM assignment 
+    INNER JOIN chores ON assignment.cid = chores.cid
+    INNER JOIN status ON assignment.sid = status.sid
+    INNER JOIN people assigned_by ON assignment.who_assigned = assigned_by.pid
+    INNER JOIN assigned_people ON assignment.assignmentid = assigned_people.assignmentid
+    INNER JOIN people assigned_to ON assigned_people.pid = assigned_to.pid
+    WHERE assignment.sid = 3";
 
     $result = mysqli_query($conn, $query);
 
@@ -112,7 +123,17 @@ function getCompletedAssignments() {
 // Function 5: Get all recent chore assignments
 function getRecentAssignments() {
     global $conn;
-    $query = "SELECT * FROM assignment WHERE sid = 2 ORDER BY assignmentid DESC LIMIT 3";
+    $query = "SELECT assignment.*, chores.chorename, status.sname, assigned_by.fname AS assigned_by_name, assigned_to.fname AS assigned_to_name
+    FROM assignment 
+    INNER JOIN chores ON assignment.cid = chores.cid
+    INNER JOIN status ON assignment.sid = status.sid
+    INNER JOIN people assigned_by ON assignment.who_assigned = assigned_by.pid
+    INNER JOIN assigned_people ON assignment.assignmentid = assigned_people.assignmentid
+    INNER JOIN people assigned_to ON assigned_people.pid = assigned_to.pid
+    WHERE assignment.sid = 3
+    ORDER BY assignment.assignmentid DESC
+    LIMIT 3";
+
 
     $result = mysqli_query($conn, $query);
 
@@ -131,13 +152,4 @@ function getRecentAssignments() {
     return $recentAssignments;
 }
 
-// Calling the function and handling messages
-$allassignments = getAllAssignments();
 
-if (is_array($allassignments)) {
-    // Displaying success message or processing the records
-    echo "Successfully retrieved records!";
-} else {
-    // Displaying error message or handling no records found
-    echo  "$allassignments";
-}

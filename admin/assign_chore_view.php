@@ -87,8 +87,6 @@ include ("../functions/select_person.php");
         <!-- Hidden input for assignment ID -->
         <input type="hidden" name="assignment" value="<?php echo $assignment['assignmentid']; ?>">
 
-        <!-- Hidden input for assignment ID -->
-        <input type="hidden" name="status" value="<?php echo $assignment['sname']; ?>">
 
         <!-- Submit Button -->
         <button type="submit" name="assignChore" id="assignChore">Assign Chore</button>
